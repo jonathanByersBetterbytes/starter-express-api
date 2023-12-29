@@ -20,7 +20,7 @@ MongoClient.connect(dbConnectionStr)
     })
     .catch(error => console.error(error))
 
-app.get('/',async (request, response)=>{
+app.all('/',async (request, response)=>{
     console.log("Just got a request!")
     //const todoItems = await db.collection('todos').find().toArray()
     //const itemsLeft = await db.collection('todos').countDocuments({completed: false})
