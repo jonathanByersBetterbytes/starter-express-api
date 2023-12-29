@@ -20,11 +20,26 @@ MongoClient.connect(dbConnectionStr)
     })
     .catch(error => console.error(error))
 
-
-
-
-app.all('/', (req, res) => {
+app.get('/', (request, response)=>{
     console.log("Just got a request!")
-    res.send('BetterBytes MongoDB!')
+    //const todoItems = await db.collection('todos').find().toArray()
+    //const itemsLeft = await db.collection('todos').countDocuments({completed: false})
+    
+    request.send('BetterBytes with MongoDB!')
+    //response.render('index.ejs', { items: todoItems, left: itemsLeft })
+    // db.collection('todos').find().toArray()
+    // .then(data => {
+    //     db.collection('todos').countDocuments({completed: false})
+    //     .then(itemsLeft => {
+    //         response.render('index.ejs', { items: data, left: itemsLeft })
+    //     })
+    // })
+    // .catch(error => console.error(error))
 })
+
+
+// app.all('/', (req, res) => {
+//     console.log("Just got a request!")
+//     res.send('BetterBytes!')
+// })
 app.listen(process.env.PORT || PORT)
