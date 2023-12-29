@@ -21,8 +21,10 @@ MongoClient.connect(dbConnectionStr)
     .catch(error => console.error(error))
 
 app.get('/',async (request, response)=>{
+    console.log("Just got a request!")
     const todoItems = await db.collection('todos').find().toArray()
-    const itemsLeft = await db.collection('todos').countDocuments({completed: false})
+    //const itemsLeft = await db.collection('todos').countDocuments({completed: false})
+    
     res.send('BetterBytes with MongoDB!')
     //response.render('index.ejs', { items: todoItems, left: itemsLeft })
     // db.collection('todos').find().toArray()
