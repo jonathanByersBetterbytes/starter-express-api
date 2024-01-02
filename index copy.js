@@ -1,8 +1,9 @@
 const express = require('express')
 const app = express()
-const MongoClient = require('mongodb').MongoClient
-const PORT = 3000
 const cors = require('cors')
+const MongoClient = require('mongodb').MongoClient
+require('dotenv').config()
+const PORT = 3000
 app.use(cors())
 app.set('view engine','ejs')
 app.use(express.static('public'))
@@ -18,14 +19,11 @@ MongoClient.connect(dbConnectionStr)
         console.log(`Connected to ${dbName} Database`)
         db = client.db(dbName)
     })
-    .catch(error => console.error(error))
+
 
 app.get('/',async (request, response)=>{
-    console.log("Just got a request!")
     const todoItems = await db.collection('todos').find().toArray()
     const itemsLeft = await db.collection('todos').countDocuments({completed: false})
-    
-    //response.send('BetterBytes with MongoDB toString!'+db.toString())
     response.render('index.ejs', { items: todoItems, left: itemsLeft })
     // db.collection('todos').find().toArray()
     // .then(data => {
@@ -38,7 +36,6 @@ app.get('/',async (request, response)=>{
 })
 
 app.post('/addTodo', (request, response) => {
-    //console.log(request.body)
     db.collection('todos').insertOne({thing: request.body.todoItem, completed: false})
     .then(result => {
         console.log('Todo Added')
@@ -74,8 +71,8 @@ app.put('/markUnComplete', (request, response) => {
         upsert: false
     })
     .then(result => {
-        console.log('Marked Uncomplete')
-        response.json('Marked Uncomplete')
+        console.log('Marked Complete')
+        response.json('Marked Complete')
     })
     .catch(error => console.error(error))
 
@@ -90,8 +87,42 @@ app.delete('/deleteItem', (request, response) => {
     .catch(error => console.error(error))
 
 })
+
+
+// const rappers = {    
+//     '21 savage': {
+//         'age': 29,
+//         'birthName': 'Sheyaa Bin Abraham-Joseph',
+//         'birthLocation': 'London, England'
+//     },
+//     'chance the rapper': {
+//         'age': 29, 
+//         'birthName': 'Chancelor Bennett',
+//         'birthLocation': 'Chicago, Ill'
+//     },
+//     'unknown': {
+//         'age': 0,
+//         'birthName': 'unknown',
+//         'birthLocation': 'unknown'
+//     }
+// }
+// app.get('/', (req, res) => {
+//     res.sendFile(__dirname + '/index.html')
+// })
+
+// app.get('/api/:name',(req, res) =>{
+//     const rapperName = req.params.name.toLowerCase()
+//     //console.log(rappers[rapperName].birthName)
+//     if(rappers[rapperName]){
+//         res.json(rappers[rapperName])
+//     }else res.json(rappers['unknown'])
+// })
+
+app.listen(process.env.PORT || PORT, ()=>{
+    console.log(`The server is now running on port ${PORT}! Betta Go Catch It!`)
+}) 
+
 // app.all('/', (req, res) => {
 //     console.log("Just got a request!")
 //     res.send('BetterBytes!')
 // })
-app.listen(process.env.PORT || PORT)
