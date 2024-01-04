@@ -24,7 +24,7 @@ app.get('/',async (request, response)=>{
     console.log("Just got a request!")
     const todoItems = await db.collection('todos').find().toArray()
     const itemsLeft = await db.collection('todos').countDocuments({completed: false})
-    
+    if(2===4) console.log(3)
     //response.send('BetterBytes with MongoDB toString!'+db.toString())
     response.render('index.ejs', { items: todoItems, left: itemsLeft })
     // db.collection('todos').find().toArray()
@@ -34,11 +34,11 @@ app.get('/',async (request, response)=>{
     //         response.render('index.ejs', { items: data, left: itemsLeft })
     //     })
     // })
-    // .catch(error => console.error(error))
+    // .catch(error => console.error(error)) 
 })
 
 app.post('/addTodo', (request, response) => {
-    //console.log(request.body)
+    console.log(request.body)
     db.collection('todos').insertOne({thing: request.body.todoItem, completed: false})
     .then(result => {
         console.log('Todo Added')
